@@ -1,6 +1,6 @@
-#Spring Boot 3: desenvolva uma API REST em Java
+# Spring Boot 3: desenvolva uma API REST em Java
 
-Para saber mais: Spring e Spring Boot
+## Para saber mais: Spring e Spring Boot
 
 Spring e Spring Boot não são a mesma coisa com nomes distintos.
 Spring é um framework para desenvolvimento de aplicações em Java, criado em meados de 2002 por Rod Johnson, que se tornou bastante popular e adotado ao redor do mundo devido a sua simplicidade e facilidade de integração com outras tecnologias.
@@ -23,12 +23,11 @@ Atenção! Este curso não terá como foco principal explorar as novidades e rec
 Trello - https://trello.com/b/O0lGCsKb/api-voll-med
 Layout mobile da app Voll.med https://www.figma.com/file/N4CgpJqsg7gjbKuDmra3EV/Voll.med
 
-#CORS
+## CORS
 Quando desenvolvemos APIs e queremos que todos os seus recursos fiquem disponíveis a qualquer cliente HTTP, uma das coisas que vem à nossa cabeça é o CORS (Cross-Origin Resource Sharing), em português, “compartilhamento de recursos com origens diferentes”. Se ainda não aconteceu com você, fique tranquilo, é normal termos erros de CORS na hora de consumir e disponibilizar APIs.
 
 Mas afinal, o que é CORS, o que causa os erros e como evitá-los em nossas APIs com Spring Boot?
 
-CORS
 O CORS é um mecanismo utilizado para adicionar cabeçalhos HTTP que informam aos navegadores para permitir que uma aplicação Web seja executada em uma origem e acesse recursos de outra origem diferente. Esse tipo de ação é chamada de requisição cross-origin HTTP. Na prática, então, ele informa aos navegadores se um determinado recurso pode ou não ser acessado.
 
 Mas por que os erros acontecem? Chegou a hora de entender!
@@ -38,10 +37,13 @@ Por padrão, uma aplicação Front-end, escrita em JavaScript, só consegue aces
 
 Duas URLs compartilham a mesma origem se o protocolo, porta (caso especificado) e host são os mesmos. Vamos comparar possíveis variações considerando a URL https://cursos.alura.com.br/category/programacao:
 
-URL														Resultado			Motivo
-https://cursos.alura.com.br/category/front-end	M		esma origem			Só o caminho difere
-http://cursos.alura.com.br/category/programacao			Erro de CORS		Protocolo diferente (http)
-https://faculdade.alura.com.br:80/category/programacao	Erro de CORS		Host diferente
+```
+URL							Resultado	Motivo
+---							---------	------
+https://cursos.alura.com.br/category/front-end		Mesma origem	Só o caminho difere
+http://cursos.alura.com.br/category/programacao		Erro de CORS	Protocolo diferente (http)
+https://faculdade.alura.com.br:80/category/programacao	Erro de CORS	Host diferente
+```
 
 Agora, fica a dúvida: o que fazer quando precisamos consumir uma API com URL diferente sem termos problemas com o CORS? Como, por exemplo, quando queremos consumir uma API que roda na porta 8000 a partir de uma aplicação React rodando na porta 3000. Veja só!
 
@@ -65,7 +67,7 @@ Para configurar o CORS e habilitar uma origem específica para consumir a API, b
 
 http://localhost:3000 seria o endereço da aplicação Front-end e .allowedMethods os métodos que serão permitidos para serem executados. Com isso, você poderá consumir a sua API sem problemas a partir de uma aplicação Front-end.
 
-#Para saber mais: Java Record
+## Para saber mais: Java Record
 
 Lançado oficialmente no Java 16, mas disponível desde o Java 14 de maneira experimental, o Record é um recurso que permite representar uma classe imutável, contendo apenas atributos, construtor e métodos de leitura, de uma maneira muito simples e enxuta.
 
@@ -73,8 +75,8 @@ Esse tipo de classe se encaixa perfeitamente para representar classes DTO, já q
 
 Para se criar uma classe DTO imutável, sem a utilização do Record, era necessário escrever muito código. Vejamos um exemplo de uma classe DTO que representa um telefone:
 
-{
-    public final class Telefone {
+```
+public final class Telefone {
 
     private final String ddd;
     private final String numero;
@@ -110,11 +112,12 @@ Para se criar uma classe DTO imutável, sem a utilização do Record, era necess
         return this.numero;
     }
 }
-}
+```
 
 Agora com o Record, todo esse código pode ser resumido com uma única linha:
 
-public record Telefone(String ddd, String numero){}COPIAR CÓDIGO
+```public record Telefone(String ddd, String numero){}```
+
 Muito mais simples, não?!
 
 Por baixo dos panos, o Java vai transformar esse Record em uma classe imutável, muito similar ao código exibido anteriormente.
