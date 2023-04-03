@@ -73,7 +73,7 @@ Esse tipo de classe se encaixa perfeitamente para representar classes DTO, já q
 
 Para se criar uma classe DTO imutável, sem a utilização do Record, era necessário escrever muito código. Vejamos um exemplo de uma classe DTO que representa um telefone:
 
-public final class Telefone {
+{public final class Telefone {
 
     private final String ddd;
     private final String numero;
@@ -108,7 +108,7 @@ public final class Telefone {
     public String getNumero() {
         return this.numero;
     }
-}
+}}
 
 Agora com o Record, todo esse código pode ser resumido com uma única linha:
 
