@@ -16,7 +16,7 @@ A versão 3 do Spring Boot foi lançada em novembro de 2022, trazendo algumas no
 Suporte ao Java 17
 Migração das especificações do Java EE para o Jakarta EE
 Suporte a imagens nativas
-Você pode ver a lista completa de novidades da versão 3 do Spring Boot no site: Spring Boot 3.0 Release Notes (https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Release-Notes)
+Você pode ver a lista completa de novidades da versão 3 do Spring Boot no site: [Spring Boot 3.0 Release Notes] (https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Release-Notes)
 
 Atenção! Este curso não terá como foco principal explorar as novidades e recursos da versão 3 do Spring Boot, mas sim o desenvolvimento de uma API Rest utilizando o Spring Boot como framework, sendo que algumas novidades da versão 3 serão utilizadas apenas quando fizerem sentido no projeto.
 
@@ -122,4 +122,4 @@ Muito mais simples, não?!
 
 Por baixo dos panos, o Java vai transformar esse Record em uma classe imutável, muito similar ao código exibido anteriormente.
 
-Mais detalhes sobre esse recurso podem ser encontrados na documentação oficial (https://docs.oracle.com/en/java/javase/16/language/records.html).
+Mais detalhes sobre esse recurso podem ser encontrados na [documentação oficial] (https://docs.oracle.com/en/java/javase/16/language/records.html).
