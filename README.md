@@ -22,3 +22,99 @@ Atenção! Este curso não terá como foco principal explorar as novidades e rec
 
 Trello - https://trello.com/b/O0lGCsKb/api-voll-med
 Layout mobile da app Voll.med https://www.figma.com/file/N4CgpJqsg7gjbKuDmra3EV/Voll.med
+
+#CORS
+Quando desenvolvemos APIs e queremos que todos os seus recursos fiquem disponíveis a qualquer cliente HTTP, uma das coisas que vem à nossa cabeça é o CORS (Cross-Origin Resource Sharing), em português, “compartilhamento de recursos com origens diferentes”. Se ainda não aconteceu com você, fique tranquilo, é normal termos erros de CORS na hora de consumir e disponibilizar APIs.
+
+Mas afinal, o que é CORS, o que causa os erros e como evitá-los em nossas APIs com Spring Boot?
+
+CORS
+O CORS é um mecanismo utilizado para adicionar cabeçalhos HTTP que informam aos navegadores para permitir que uma aplicação Web seja executada em uma origem e acesse recursos de outra origem diferente. Esse tipo de ação é chamada de requisição cross-origin HTTP. Na prática, então, ele informa aos navegadores se um determinado recurso pode ou não ser acessado.
+
+Mas por que os erros acontecem? Chegou a hora de entender!
+
+Same-origin policy
+Por padrão, uma aplicação Front-end, escrita em JavaScript, só consegue acessar recursos localizados na mesma origem da solicitação. Isso acontece por conta da política de mesma origem (same-origin policy), que é um mecanismo de segurança dos Browsers que restringe a maneira de um documento ou script de uma origem interagir com recursos de outra origem. Essa política possui o objetivo de frear ataques maliciosos.
+
+Duas URLs compartilham a mesma origem se o protocolo, porta (caso especificado) e host são os mesmos. Vamos comparar possíveis variações considerando a URL https://cursos.alura.com.br/category/programacao:
+
+URL														Resultado			Motivo
+https://cursos.alura.com.br/category/front-end	M		esma origem			Só o caminho difere
+http://cursos.alura.com.br/category/programacao			Erro de CORS		Protocolo diferente (http)
+https://faculdade.alura.com.br:80/category/programacao	Erro de CORS		Host diferente
+
+Agora, fica a dúvida: o que fazer quando precisamos consumir uma API com URL diferente sem termos problemas com o CORS? Como, por exemplo, quando queremos consumir uma API que roda na porta 8000 a partir de uma aplicação React rodando na porta 3000. Veja só!
+
+Ao enviar uma requisição para uma API de origem diferente, a API precisa retornar um header chamado Access-Control-Allow-Origin. Dentro dele, é necessário informar as diferentes origens que serão permitidas para consumir a API, em nosso caso: Access-Control-Allow-Origin: http://localhost:3000.
+
+É possível permitir o acesso de qualquer origem utilizando o símbolo *(asterisco): Access-Control-Allow-Origin: *. Mas isso não é uma medida recomendada, pois permite que origens desconhecidas acessem o servidor, a não ser que seja intencional, como no caso de uma API pública. Agora vamos ver como fazer isso no Spring Boot de maneira correta.
+
+Habilitando diferentes origens no Spring Boot
+Para configurar o CORS e habilitar uma origem específica para consumir a API, basta criar uma classe de configuração como a seguinte:
+
+	@Configuration
+	public class CorsConfiguration implements WebMvcConfigurer {
+
+		@Override
+		public void addCorsMappings(CorsRegistry registry) {
+			registry.addMapping("/**")
+				.allowedOrigins("http://localhost:3000")
+				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT");
+		}
+	}
+
+http://localhost:3000 seria o endereço da aplicação Front-end e .allowedMethods os métodos que serão permitidos para serem executados. Com isso, você poderá consumir a sua API sem problemas a partir de uma aplicação Front-end.
+
+#Para saber mais: Java Record
+
+Lançado oficialmente no Java 16, mas disponível desde o Java 14 de maneira experimental, o Record é um recurso que permite representar uma classe imutável, contendo apenas atributos, construtor e métodos de leitura, de uma maneira muito simples e enxuta.
+
+Esse tipo de classe se encaixa perfeitamente para representar classes DTO, já que seu objetivo é apenas representar dados que serão recebidos ou devolvidos pela API, sem nenhum tipo de comportamento.
+
+Para se criar uma classe DTO imutável, sem a utilização do Record, era necessário escrever muito código. Vejamos um exemplo de uma classe DTO que representa um telefone:
+
+public final class Telefone {
+
+    private final String ddd;
+    private final String numero;
+
+    public Telefone(String ddd, String numero) {
+        this.ddd = ddd;
+        this.numero = numero;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ddd, numero);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (!(obj instanceof Telefone)) {
+            return false;
+        } else {
+            Telefone other = (Telefone) obj;
+            return Objects.equals(ddd, other.ddd)
+              && Objects.equals(numero, other.numero);
+        }
+    }
+
+    public String getDdd() {
+        return this.ddd;
+    }
+
+    public String getNumero() {
+        return this.numero;
+    }
+}
+
+Agora com o Record, todo esse código pode ser resumido com uma única linha:
+
+public record Telefone(String ddd, String numero){}COPIAR CÓDIGO
+Muito mais simples, não?!
+
+Por baixo dos panos, o Java vai transformar esse Record em uma classe imutável, muito similar ao código exibido anteriormente.
+
+Mais detalhes sobre esse recurso podem ser encontrados na documentação oficial (https://docs.oracle.com/en/java/javase/16/language/records.html).

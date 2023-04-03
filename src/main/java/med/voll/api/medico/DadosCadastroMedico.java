@@ -1,0 +1,9 @@
+package med.voll.api.medico;
+
+import med.voll.api.endereco.DadosEndereco;
+
+public class DadosCadastroMedico {
+
+	public DadosCadastroMedico(String nome, String email, String crm, Especialidade especialidade, DadosEndereco endereco) {
+	}
+}
