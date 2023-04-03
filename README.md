@@ -1,6 +1,6 @@
 #Spring Boot 3: desenvolva uma API REST em Java
 
-#Para saber mais: Spring e Spring Boot
+Para saber mais: Spring e Spring Boot
 
 Spring e Spring Boot não são a mesma coisa com nomes distintos.
 Spring é um framework para desenvolvimento de aplicações em Java, criado em meados de 2002 por Rod Johnson, que se tornou bastante popular e adotado ao redor do mundo devido a sua simplicidade e facilidade de integração com outras tecnologias.
@@ -19,3 +19,6 @@ Suporte a imagens nativas
 Você pode ver a lista completa de novidades da versão 3 do Spring Boot no site: Spring Boot 3.0 Release Notes (https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-3.0-Release-Notes)
 
 Atenção! Este curso não terá como foco principal explorar as novidades e recursos da versão 3 do Spring Boot, mas sim o desenvolvimento de uma API Rest utilizando o Spring Boot como framework, sendo que algumas novidades da versão 3 serão utilizadas apenas quando fizerem sentido no projeto.
+
+Trello - https://trello.com/b/O0lGCsKb/api-voll-med
+Layout mobile da app Voll.med https://www.figma.com/file/N4CgpJqsg7gjbKuDmra3EV/Voll.med
