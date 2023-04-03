@@ -21,7 +21,8 @@ Você pode ver a lista completa de novidades da versão 3 do Spring Boot no site
 Atenção! Este curso não terá como foco principal explorar as novidades e recursos da versão 3 do Spring Boot, mas sim o desenvolvimento de uma API Rest utilizando o Spring Boot como framework, sendo que algumas novidades da versão 3 serão utilizadas apenas quando fizerem sentido no projeto.
 
 Trello - https://trello.com/b/O0lGCsKb/api-voll-med
-Layout mobile da app Voll.med https://www.figma.com/file/N4CgpJqsg7gjbKuDmra3EV/Voll.med
+
+Layout mobile da app Voll.med - https://www.figma.com/file/N4CgpJqsg7gjbKuDmra3EV/Voll.med
 
 ## CORS
 Quando desenvolvemos APIs e queremos que todos os seus recursos fiquem disponíveis a qualquer cliente HTTP, uma das coisas que vem à nossa cabeça é o CORS (Cross-Origin Resource Sharing), em português, “compartilhamento de recursos com origens diferentes”. Se ainda não aconteceu com você, fique tranquilo, é normal termos erros de CORS na hora de consumir e disponibilizar APIs.
