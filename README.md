@@ -1,7 +1,6 @@
-# api
-Spring Boot 3: desenvolva uma API REST em Java
+#Spring Boot 3: desenvolva uma API REST em Java
 
-Para saber mais: Spring e Spring Boot
+#Para saber mais: Spring e Spring Boot
 
 Spring e Spring Boot não são a mesma coisa com nomes distintos.
 Spring é um framework para desenvolvimento de aplicações em Java, criado em meados de 2002 por Rod Johnson, que se tornou bastante popular e adotado ao redor do mundo devido a sua simplicidade e facilidade de integração com outras tecnologias.
