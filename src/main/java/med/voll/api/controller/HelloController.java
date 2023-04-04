@@ -10,7 +10,7 @@ public class HelloController {
 
 	@GetMapping
 	public String olaMundo() {
-		return "Hello World Spring! (by WeeBee 20023)";
+		return "Hello World Spring! (by WeeBee 2023)";
 	}
 	
 }
