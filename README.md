@@ -24,7 +24,7 @@ Trello - https://trello.com/b/O0lGCsKb/api-voll-med
 
 Layout mobile da app Voll.med - https://www.figma.com/file/N4CgpJqsg7gjbKuDmra3EV/Voll.med
 
-## CORS
+### CORS
 Quando desenvolvemos APIs e queremos que todos os seus recursos fiquem disponíveis a qualquer cliente HTTP, uma das coisas que vem à nossa cabeça é o CORS (Cross-Origin Resource Sharing), em português, “compartilhamento de recursos com origens diferentes”. Se ainda não aconteceu com você, fique tranquilo, é normal termos erros de CORS na hora de consumir e disponibilizar APIs.
 
 Mas afinal, o que é CORS, o que causa os erros e como evitá-los em nossas APIs com Spring Boot?
