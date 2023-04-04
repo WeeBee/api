@@ -20,14 +20,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class Medico {
 
-	public Medico(DadosCadastroMedico dados) {
-		this.nome = dados.getNome();
-		this.email = dados.getEmail();
-		this.crm = dados.getCrm();
-		this.especialidade = dados.getEspecialidade();
-		this.endereco = new Endereco(dados.getEndereco());
-	}
-
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String nome;
@@ -37,4 +29,12 @@ public class Medico {
 	private Especialidade especialidade;
 	@Embedded
 	private Endereco endereco;
+
+	public Medico(DadosCadastroMedico dados) {
+		this.nome = dados.getNome();
+		this.email = dados.getEmail();
+		this.crm = dados.getCrm();
+		this.especialidade = dados.getEspecialidade();
+		this.endereco = new Endereco(dados.getEndereco());
+	}
 }

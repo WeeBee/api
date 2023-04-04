@@ -19,6 +19,8 @@ public class Endereco {
 	private String cidade;
 	private String uf;
 	
+	public Endereco() {} // lombok não tá funcionado??? tá precisando do construtor padrão apesar da annotation @NoArgsConstructor... :| (@WeeBee)
+	
 	public Endereco(DadosEndereco dados) {
 		this.logradouro = dados.getLogradouro();
 		this.bairro = dados.getBairro();
