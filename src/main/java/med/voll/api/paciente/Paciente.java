@@ -29,10 +29,10 @@ public class Paciente {
 	private Endereco endereco;
 
 	public Paciente(DadosCadastroPaciente dados) {
-		this.nome = dados.getNome();
-		this.email = dados.getEmail();
-		this.telefone = dados.getTelefone();
-		this.cpf = dados.getCpf();
-		this.endereco = new Endereco(dados.getEndereco());
+		this.nome = dados.nome();
+		this.email = dados.email();
+		this.telefone = dados.telefone();
+		this.cpf = dados.cpf();
+		this.endereco = new Endereco(dados.endereco());
 	}
 }
