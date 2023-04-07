@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import med.voll.api.paciente.DadosCadastroPaciente;
-import med.voll.api.paciente.DadosListagemPaciente;
-import med.voll.api.paciente.Paciente;
-import med.voll.api.paciente.PacienteRepository;
+import med.voll.api.domain.paciente.DadosCadastroPaciente;
+import med.voll.api.domain.paciente.DadosListagemPaciente;
+import med.voll.api.domain.paciente.Paciente;
+import med.voll.api.domain.paciente.PacienteRepository;
 
 @RestController
 @RequestMapping("pacientes")

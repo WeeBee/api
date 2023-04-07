@@ -432,3 +432,82 @@ Quando você digita uma URL e recebe a mensagem Error 404, significa que essa UR
 O erro 503 significa que o serviço acessado está temporariamente indisponível. Causas comuns são um servidor em manutenção ou sobrecarregado. Ataques maliciosos, como o DDoS, causam bastante esse problema.
 
 **Uma dica final:** dificilmente conseguimos guardar em nossa cabeça o que cada código significa, portanto, existem sites na internet que possuem todos os códigos e os significados para que possamos consultar quando necessário. Existem dois sites bem conhecidos e utilizados por pessoas desenvolvedoras, um para cada preferência: se você gosta de gatos, pode utilizar o [HTTP Cats](https://http.cat/); já, se prefere cachorros, utilize o [HTTP Dogs](https://http.dog/).
+
+### Para saber mais: propriedades do Spring Boot
+Ao longo dos cursos, tivemos que adicionar algumas propriedades no arquivo application.properties para realizar configurações no projeto, como, por exemplo, as configurações de acesso ao banco de dados.
+
+O Spring Boot possui centenas de propriedades que podemos incluir nesse arquivo, sendo impossível memorizar todas elas. Sendo assim, é importante conhecer a documentação que lista todas essas propriedades, pois eventualmente precisaremos consultá-la.
+
+Você pode acessar a documentação oficial no link: [Common Application Properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html).
+
+### Para saber mais: mensagens em português
+Por padrão o Bean Validation devolve as mensagens de erro em inglês, entretanto existe uma tradução dessas mensagens para o português já implementada nessa especificação.
+
+No protocolo HTTP existe um cabeçalho chamado Accept-Language, que serve para indicar ao servidor o idioma de preferência do cliente disparando a requisição. Podemos utilizar esse cabeçalho para indicar ao Spring o idioma desejado, para que então na integração com o Bean Validation ele busque as mensagens de acordo com o idioma indicado.
+
+No Insomnia, e também nas outras ferramentas similares, existe uma opção chamada Header que podemos incluir cabeçalhos a serem enviados na requisição. Se adicionarmos o header Accept-Language com o valor pt-br, as mensagens de erro do Bean Validation serão automaticamente devolvidas em português.
+
+Obs: O Bean Validation tem tradução das mensagens de erro apenas para alguns poucos idiomas.
+
+### Para saber mais: personalizando mensagens de erro
+Você deve ter notado que o Bean Validation possui uma mensagem de erro para cada uma de suas anotações. Por exemplo, quando a validação falha em algum atributo anotado com @NotBlank, a mensagem de erro será: must not be blank.
+
+Essas mensagens de erro não foram definidas na aplicação, pois são mensagens de erro padrão do próprio Bean Validation. Entretanto, caso você queira, pode personalizar tais mensagens.
+
+Uma das maneiras de personalizar as mensagens de erro é adicionar o atributo message nas próprias anotações de validação:
+```
+public record DadosCadastroMedico(
+    @NotBlank(message = "Nome é obrigatório")
+    String nome,
+
+    @NotBlank(message = "Email é obrigatório")
+    @Email(message = "Formato do email é inválido")
+    String email,
+
+    @NotBlank(message = "Telefone é obrigatório")
+    String telefone,
+
+    @NotBlank(message = "CRM é obrigatório")
+    @Pattern(regexp = "\\d{4,6}", message = "Formato do CRM é inválido")
+    String crm,
+
+    @NotNull(message = "Especialidade é obrigatória")
+    Especialidade especialidade,
+
+    @NotNull(message = "Dados do endereço são obrigatórios")
+    @Valid DadosEndereco endereco) {}
+```
+Outra maneira é isolar as mensagens em um arquivo de propriedades, que deve possuir o nome ValidationMessages.properties e ser criado no diretório src/main/resources:
+```
+nome.obrigatorio=Nome é obrigatório
+email.obrigatorio=Email é obrigatório
+email.invalido=Formato do email é inválido
+telefone.obrigatorio=Telefone é obrigatório
+crm.obrigatorio=CRM é obrigatório
+crm.invalido=Formato do CRM é inválido
+especialidade.obrigatoria=Especialidade é obrigatória
+endereco.obrigatorio=Dados do endereço são obrigatórios
+```
+E, nas anotações, indicar a chave das propriedades pelo próprio atributo message, delimitando com os caracteres { e }:
+```
+public record DadosCadastroMedico(
+    @NotBlank(message = "{nome.obrigatorio}")
+    String nome,
+
+    @NotBlank(message = "{email.obrigatorio}")
+    @Email(message = "{email.invalido}")
+    String email,
+
+    @NotBlank(message = "{telefone.obrigatorio}")
+    String telefone,
+
+    @NotBlank(message = "{crm.obrigatorio}")
+    @Pattern(regexp = "\\d{4,6}", message = "{crm.invalido}")
+    String crm,
+
+    @NotNull(message = "{especialidade.obrigatoria}")
+    Especialidade especialidade,
+
+    @NotNull(message = "{endereco.obrigatorio}")
+    @Valid DadosEndereco endereco) {}
+```
