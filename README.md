@@ -581,3 +581,23 @@ public class LogFilter implements Filter {
 O método `doFilter` é chamado pelo servidor automaticamente, sempre que esse _filter_ tiver que ser executado, e a chamada ao método `filterChain.doFilter` indica que os próximos _filters_, caso existam outros, podem ser executados. A anotação `@WebFilter`, adicionada na classe, indica ao servidor em quais requisições esse _filter_ deve ser chamado, baseando-se na URL da requisição.
 
 No curso, utilizaremos outra maneira de implementar um _filter_, usando recursos do Spring que facilitam sua implementação.
+
+## Para saber mais: controle de acesso por url
+Na aplicação utilizada no curso não teremos perfis de acessos distintos para os usuários. Entretanto, esse recurso é utilizado em algumas aplicações e podemos indicar ao _Spring Security_ que determinadas URLs somente podem ser acessadas por usuários que possuem um perfil específico.
+
+Por exemplo, suponha que em nossa aplicação tenhamos um perfil de acesso chamado de **ADMIN**, sendo que somente usuários com esse perfil possam excluir médicos e pacientes. Podemos indicar ao _Spring_ Security tal configuração alterando o método `securityFilterChain`, na classe `SecurityConfigurations`, da seguinte maneira:
+```
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    return http.csrf().disable()
+        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        .and().authorizeHttpRequests()
+        .requestMatchers(HttpMethod.POST, "/login").permitAll()
+        .requestMatchers(HttpMethod.DELETE, "/medicos").hasRole("ADMIN")
+        .requestMatchers(HttpMethod.DELETE, "/pacientes").hasRole("ADMIN")
+        .anyRequest().authenticated()
+        .and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+        .build();
+}
+```
+Repare que no código anterior foram adicionadas duas linhas, indicando ao _Spring Security_ que as requisições do tipo `DELETE` para as URLs `/medicos` e `/pacientes` somente podem ser executadas por usuários autenticados e cujo perfil de acesso seja **ADMIN**.
