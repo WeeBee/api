@@ -792,3 +792,141 @@ public OpenAPI customOpenAPI() {
 No código anterior, repare que após a configuração do token JWT foram adicionadas as informações da API. Ao entrar novamente na página do Swagger UI, tais informações serão exibidas, conforme demonstrado na imagem a seguir:
 ![Voll.med API swagger](img/img-01.png)
 Para saber mais detalhes sobre quais informações podem ser configuradas na documentação da API, consulte a [especificação OpenAPI](https://spec.openapis.org/oas/latest.html#schema) no site oficial da iniciativa.
+
+## Para saber mais: testes com in-memory database
+Como citado no vídeo anterior, podemos realizar os testes de interfaces repository utilizando um banco de dados em memória, como o **H2**, ao invés de utilizar o mesmo banco de dados da aplicação.
+
+Caso você queira utilizar essa estratégia de executar os testes com um banco de dados em memória, será necessário incluir o H2 no projeto, adicionando a seguinte dependência no arquivo `pom.xml`:
+```
+<dependency>
+  <groupId>com.h2database</groupId>
+  <artifactId>h2</artifactId>
+  <scope>runtime</scope>
+</dependency>
+```
+E também deve remover as anotações `@AutoConfigureTestDatabase` e `@ActiveProfiles` na classe de teste, deixando-a apenas com a anotação `@DataJpaTest`:
+```
+@DataJpaTest
+class MedicoRepositoryTest {
+
+  //resto do código permanece igual
+
+}
+```
+Você também pode **apagar** o arquivo **application-test.properties**, pois o Spring Boot realiza as configurações de `url`, `username` e `password` do banco de dados H2 de maneira automática.
+
+## Para saber mais: build com arquivo .war
+Projetos que utilizam o Spring Boot geralmente utilizam o formato **jar** para o empacotamento da aplicação, conforme foi demonstrado ao longo desta aula. Entretanto, o Spring Boot fornece suporte para o empacotamento da aplicação via formato **war**, que era bastante utilizado em aplicações Java antigamente.
+
+Caso você queira que o build do projeto empacote a aplicação em um arquivo no formato war, vai precisar realizar as seguintes alterações:
+
+1) Adicionar a tag `<packaging>war</packaging>` no arquivo `pom.xml` do projeto, devendo essa tag ser filha da tag raiz `<project>`:
+```
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.0.0</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+  <groupId>med.voll</groupId>
+  <artifactId>api</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>api</name>
+
+  <packaging>war</packaging>
+```
+2) Ainda no arquivo `pom.xml`, adicionar a seguinte dependência:
+```
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-tomcat</artifactId>
+  <scope>provided</scope>
+</dependency>
+```
+3) Alterar a classe main do projeto (`ApiApplication`) para herdar da classe `SpringBootServletInitializer`, bem como sobrescrever o método `configure`:
+```
+@SpringBootApplication
+public class ApiApplication extends SpringBootServletInitializer {
+
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    return application.sources(ApiApplication.class);
+  }
+
+  public static void main(String[] args) {
+    SpringApplication.run(ApiApplication.class, args);
+  }
+
+}
+```
+Pronto! Agora, ao realizar o build do projeto, será gerado um arquivo com a extensão `.war` dentro do diretório `target`, ao invés do arquivo com a extensão `.jar`.
+
+## Para saber mais: GraalVM Native Image
+Uma das novidades de mais destaque da versão 3 do Spring Boot é o suporte a imagens nativas, algo que reduz, de maneira muito significativa, o consumo de memória e o tempo de inicialização de uma aplicação, sendo que alguns outros frameworks concorrentes do Spring Boot, como Micronaut e Quarkus, já forneciam suporte a esse recurso.
+
+Na realidade até era possível gerar imagens nativas em aplicações com Spring Boot antes da versão 3, mas para isso se fazia necessário a utilização de um projeto chamado Spring Native, que adicionava suporte a isso. Com a chegada da versão 3 do Spring Boot, tal projeto não é mais necessário.
+
+### Native Image
+Imagem nativa é uma tecnologia utilizada para compilar uma aplicação Java, incluindo todas as suas dependências, gerando um arquivo binário executável que pode ser executado diretamente no sistema operacional, sem a necessidade de se utilizar a JVM. Mesmo sem executar numa JVM, a aplicação também contará com os recursos dela, como gerenciamento de memória, garbage collector e controle de execução de threads.
+
+Para saber mais detalhes sobre a tecnologia de imagens nativas acesse a documentação no site: https://www.graalvm.org/native-image
+
+### Native Image com Spring Boot 3
+Uma maneira bem simples de gerar uma imagem nativa da aplicação é utilizando um plugin do Maven, que deve ser incluído no arquivo pom.xml:
+```
+<plugin>
+  <groupId>org.graalvm.buildtools</groupId>
+  <artifactId>native-maven-plugin</artifactId>
+</plugin>
+```
+Pronto! Essa é a única alteração necessária no projeto. Após isso, a geração da imagem deve ser feita via terminal, com o seguinte comando Maven sendo executado no diretório raiz do projeto:
+`./mvnw -Pnative native:compile`
+O comando anterior pode levar vários minutos para finalizar sua execução, sendo totalmente normal essa demora.
+
+**Atenção!** Para executar o comando anterior e gerar a imagem nativa do projeto, é necessário que você tenha instalado em seu computador o [GraalVM](https://www.graalvm.org/) (máquina virtual Java com suporte ao recurso de Native Image) em uma versão igual ou superior a 22.3.
+
+Após o comando anterior finalizar, será gerado no terminal um log como o seguinte:
+```
+Top 10 packages in code area:           Top 10 object types in image heap:
+   3,32MB jdk.proxy4                      19,44MB byte[] for embedded resources
+   1,70MB sun.security.ssl                16,01MB byte[] for code metadata
+   1,18MB java.util                        8,91MB java.lang.Class
+ 936,28KB java.lang.invoke                 6,74MB java.lang.String
+ 794,65KB com.mysql.cj.jdbc                6,51MB byte[] for java.lang.String
+ 724,02KB com.sun.crypto.provider          4,89MB byte[] for general heap data
+ 650,46KB org.hibernate.dialect            3,07MB c.o.s.c.h.DynamicHubCompanion
+ 566,00KB org.hibernate.dialect.function   2,40MB byte[] for reflection metadata
+ 563,59KB com.oracle.svm.core.code         1,30MB java.lang.String[]
+ 544,48KB org.apache.catalina.core         1,25MB c.o.s.c.h.DynamicHu~onMetadata
+  61,46MB for 1482 more packages           9,74MB for 6281 more object types
+--------------------------------------------------------------------------------
+    9,7s (5,7% of total time) in 77 GCs | Peak RSS: 8,03GB | CPU load: 7,27
+--------------------------------------------------------------------------------
+Produced artifacts:
+ /home/rodrigo/Desktop/api/target/api (executable)
+ /home/rodrigo/Desktop/api/target/api.build_artifacts.txt (txt)
+================================================================================
+Finished generating 'api' in 2m 50s.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  03:03 min
+[INFO] Finished at: 2023-01-17T12:13:04-03:00
+[INFO] ------------------------------------------------------------------------
+```
+A imagem nativa é gerada no diretório target, juntamente com o arquivo .jar da aplicação, como um arquivo executável de nome api, conforme demonstrado na imagem a seguir:
+![target folder](img/img-02.png)
+
+Diferente do arquivo .jar, que é executado pela JVM via comando `java -jar`, a imagem nativa é um arquivo binário e deve ser executada diretamente pelo terminal:
+`target/api`
+
+Ao rodar o comando anterior será gerado o log de inicialização da aplicação, que ao final exibe o tempo que levou para a aplicação inicializar:
+`INFO 127815 --- [restartedMain] med.voll.api.ApiApplication : Started ApiApplication in 0.3 seconds (process running for 0.304)`
+
+Repare que a aplicação levou menos de meio segundo para inicializar, algo realmente impressionante, pois quando a executamos pela JVM, via arquivo .jar, esse tempo sobe para algo em torno de 5 segundos.
+
+Para saber mais detalhes sobre a geração de uma imagem nativa com Spring Boot 3 acesse a documentação no site:
+- [GraalVM Native Image Support](https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html)
