@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.validation.Valid;
-import med.voll.api.controller.DadosCancelamentoConsulta;
 import med.voll.api.domain.ValidacaoException;
 import med.voll.api.domain.consulta.validacoes.ValidadorAgendamentoDeConsulta;
 import med.voll.api.domain.consulta.validacoes.ValidadorCancelamentoDeConsulta;

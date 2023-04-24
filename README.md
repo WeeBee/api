@@ -752,3 +752,43 @@ Cada princípio representa uma boa prática de programação, que quando aplicad
 Estes dois episódios do podcast Hipsters.Tech foram dedicados ao tema SOLID:
 - [Hipsters #129 - Práticas de Orientação a Objetos](https://cursos.alura.com.br/extra/hipsterstech/praticas-de-orientacao-a-objetos-hipsters-129-a453)
 - [Hipsters #219 - SOLID: Código bom e bonito](https://cursos.alura.com.br/extra/hipsterstech/solid-codigo-bom-e-bonito-hipsters-ponto-tech-219-a649)
+
+## Para saber mais: OpenAPI Initiative
+A documentação é algo muito importante em um projeto, principalmente se ele for uma API Rest, pois nesse caso podemos ter vários clientes que vão precisar se comunicar com ela, necessitando então de uma documentação que os ensinem como realizar essa comunicação de maneira correta.
+
+Por muito tempo não existia um formato padrão de se documentar uma API Rest, até que em 2010 surgiu um projeto conhecido como **Swagger**, cujo objetivo era ser uma especificação _open source_ para design de APIs Rest. Depois de um tempo, foram desenvolvidas algumas ferramentas para auxiliar pessoas desenvolvedoras a implementar, visualizar e testar suas APIs, como o _Swagger UI_, _Swagger Editor_ e _Swagger Codegen_, tornando-se assim muito popular e utilizado ao redor do mundo.
+
+Em 2015, o Swagger foi comprado pela empresa **SmartBear Software**, que doou a parte da especificação para a fundação Linux. Por sua vez, a fundação renomeou o projeto para **OpenAPI**. Após isso, foi criada a **OpenAPI Initiative**, uma organização focada no desenvolvimento e evolução da especificação OpenAPI de maneira aberta e transparente.
+
+A OpenAPI é hoje a especificação mais utilizada, e também a principal, para documentar uma API Rest. A documentação segue um padrão que pode ser descrito no formato yaml ou JSON, facilitando a criação de ferramentas que consigam ler tais arquivos e automatizar a criação de documentações, bem como a geração de códigos para consumo de uma API.
+
+Você pode obter mais detalhes no site oficial da [OpenAPI Initiative](https://www.openapis.org/).
+
+## Para saber mais: personalizando a documentação
+Vimos no vídeo anterior que é possível personalizar a documentação gerada pelo SpringDoc para a inclusão do token de autenticação. Além do token, podemos incluir outras informações na documentação que fazem parte da especificação OpenAPI, como, por exemplo, a descrição da API, informações de contato e de sua licença de uso.
+
+Tais configurações devem ser feitas no objeto OpenAPI, que foi configurado na classe `SpringDocConfigurations` de nosso projeto:
+```
+@Bean
+public OpenAPI customOpenAPI() {
+    return new OpenAPI()
+            .components(new Components()
+                    .addSecuritySchemes("bearer-key",
+                            new SecurityScheme()
+                                    .type(SecurityScheme.Type.HTTP)
+                                    .scheme("bearer")
+                                    .bearerFormat("JWT")))
+                    .info(new Info()
+                            .title("Voll.med API")
+                            .description("API Rest da aplicação Voll.med, contendo as funcionalidades de CRUD de médicos e de pacientes, além de agendamento e cancelamento de consultas")
+                            .contact(new Contact()
+                                    .name("Time Backend")
+                                    .email("backend@voll.med"))
+                    .license(new License()
+                            .name("Apache 2.0")
+                            .url("http://voll.med/api/licenca")));
+}
+```
+No código anterior, repare que após a configuração do token JWT foram adicionadas as informações da API. Ao entrar novamente na página do Swagger UI, tais informações serão exibidas, conforme demonstrado na imagem a seguir:
+![Voll.med API swagger](img/img-01.png)
+Para saber mais detalhes sobre quais informações podem ser configuradas na documentação da API, consulte a [especificação OpenAPI](https://spec.openapis.org/oas/latest.html#schema) no site oficial da iniciativa.

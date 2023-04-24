@@ -6,12 +6,12 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import med.voll.api.controller.DadosCancelamentoConsulta;
 import med.voll.api.domain.ValidacaoException;
 import med.voll.api.domain.consulta.ConsultaRepository;
+import med.voll.api.domain.consulta.DadosCancelamentoConsulta;
 
 @Component
-public class ValidadorHorarioCancelamento {
+public class ValidadorHorarioCancelamento implements ValidadorCancelamentoDeConsulta {
 
 	@Autowired
 	private ConsultaRepository repository;
