@@ -737,3 +737,18 @@ Existem duas formas mais utilizadas para criar Services. Você pode criar Servic
 Pense em um sistema de vendas, no qual provavelmente teríamos algumas funções como: _Cadastrar usuário_, _Efetuar login_, _Buscar produtos_, _Buscar produto por nome_, etc. Logo, poderíamos criar os seguintes Services: **`CadastroDeUsuarioService`**, **`EfetuaLoginService`**, **`BuscaDeProdutosService`**, etc.
 
 Mas é importante ficarmos atentos, pois muitas vezes não é necessário criar um Service e, consequentemente, adicionar mais uma camada e complexidade desnecessária à nossa aplicação. Uma regra que podemos utilizar é a seguinte: se não houverem regras de negócio, podemos simplesmente realizar a comunicação direta entre os controllers e os repositories da aplicação.
+
+## Para saber mais: princípios SOLID
+**SOLID** é uma sigla que representa cinco princípios de programação:
+
+- **S**ingle Responsibility Principle (Princípio da Responsabilidade Única)
+- **O**pen-Closed Principle (Princípio Aberto-Fechado)
+- **L**iskov Substitution Principle (Princípio da Substituição de Liskov)
+- **I**nterface Segregation Principle (Princípio da Segregação de Interface)
+- **D**ependency Inversion Principle (Princípio da Inversão de Dependência)
+
+Cada princípio representa uma boa prática de programação, que quando aplicada em uma aplicação facilita muito a sua manutenção e extensão. Tais princípios foram criados por Robert Martin, conhecido como _Uncle Bob_, em seu artigo [Design Principles and Design Patterns](http://staff.cs.utu.fi/~jounsmed/doos_06/material/DesignPrinciplesAndPatterns.pdf).
+
+Estes dois episódios do podcast Hipsters.Tech foram dedicados ao tema SOLID:
+- [Hipsters #129 - Práticas de Orientação a Objetos](https://cursos.alura.com.br/extra/hipsterstech/praticas-de-orientacao-a-objetos-hipsters-129-a453)
+- [Hipsters #219 - SOLID: Código bom e bonito](https://cursos.alura.com.br/extra/hipsterstech/solid-codigo-bom-e-bonito-hipsters-ponto-tech-219-a649)

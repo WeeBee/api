@@ -27,6 +27,7 @@ public class Paciente {
 	private String cpf;
 	@Embedded
 	private Endereco endereco;
+	private Boolean ativo;
 
 	public Paciente(DadosCadastroPaciente dados) {
 		this.nome = dados.nome();
